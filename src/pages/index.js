@@ -10,6 +10,18 @@ import github from '../images/github.png'
 import bird from '../images/bird.png'
 import email from '../images/email.png'
 
+const normalizePath = path => {
+  if (!path?.endsWith(`/`)) {
+    path = `${path}/`
+  }
+
+  if (!path?.startsWith(`/`)) {
+    path = `/${path}`
+  }
+
+  return path
+}
+
 const IndexPage = () => {
   const { allWpPost } = useStaticQuery(graphql`
     query {
@@ -18,6 +30,7 @@ const IndexPage = () => {
           node {
             title
             uri
+            slug
           }
         }
       }
@@ -41,7 +54,7 @@ const IndexPage = () => {
       <h2>Blog Posts</h2>
       {allWpPost.edges.map(({ node }) => (
         <li>
-          <Link href={node.uri}>{node.title}</Link>
+          <Link to={node.uri}>{node.title}</Link>
         </li>
       ))}
       <div>
